@@ -1,18 +1,55 @@
-#!/usr/bin/env bash
-# Stop hook verification checking Adversarial QA approval and empty pending items before task closure.
-set -euo pipefail
+#!/usr/bin/env python3
+"""
+Stop hook: prevents task closure if Adversarial QA has not been approved.
 
-TASK_FILE="CURRENT_TASK.md"
+The gate only activates when the close-task workflow has explicitly initiated closure
+by setting "Closing: Initiated" in CURRENT_TASK.md. This prevents the hook from
+blocking every normal agent pause between workflow steps.
 
-if [ ! -f "$TASK_FILE" ] || [ ! -s "$TASK_FILE" ]; then
-  exit 0
-fi
+Input (stdin):  JSON with executionNum, terminationReason, fullyIdle, etc.
+Output (stdout): JSON { "decision": "continue"|"", "reason": "..." }
+              "continue" re-enters the execution loop; "" allows the stop.
+"""
+import json
+import re
+import sys
 
-# Verify Adversarial QA approval state using flexible Markdown bold matching
-if ! grep -qEi "Adversarial QA(\*\*)?:\s*Approved" "$TASK_FILE" && ! grep -qEi "QA(\*\*)?:\s*Approved" "$TASK_FILE"; then
-  echo "Closing Gate Blocked: Adversarial QA status is not 'Approved' in CURRENT_TASK.md." >&2
-  exit 1
-fi
+TASK_FILE = "CURRENT_TASK.md"
 
-echo "Closing Gate Passed: Task completion verified and approved by Adversarial QA."
-exit 0
+
+def main():
+    # Consume stdin (required by hook contract even if unused)
+    sys.stdin.read()
+
+    try:
+        with open(TASK_FILE) as f:
+            content = f.read()
+
+        # Only enforce the gate when close-task has explicitly initiated closure.
+        # Without this marker, the hook transparently allows all normal stops.
+        closing_initiated = bool(
+            re.search(r"\*\*Closing\*\*:\s*Initiated", content, re.IGNORECASE)
+        )
+        if not closing_initiated:
+            print(json.dumps({"decision": ""}))
+            return
+
+        # Closing is in progress — block until QA is approved.
+        if re.search(r"Adversarial\s+QA\**:?\**\s*Approved", content, re.IGNORECASE):
+            print(json.dumps({"decision": ""}))
+        else:
+            print(json.dumps({
+                "decision": "continue",
+                "reason": (
+                    "Closing Gate Blocked: Adversarial QA status is not 'Approved' "
+                    "in CURRENT_TASK.md. The adversarial-qa subagent must approve "
+                    "the task before it can be closed."
+                ),
+            }))
+
+    except FileNotFoundError:
+        print(json.dumps({"decision": ""}))
+
+
+if __name__ == "__main__":
+    main()

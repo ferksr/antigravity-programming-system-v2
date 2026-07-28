@@ -19,6 +19,8 @@ Follow this workflow to process raw ideas, notes, or feature requests stored in 
 - Present the complete proposed note mapping to the user.
 - Wait for user confirmation before writing changes to target files.
 
-## Step 5 — Move Processed Note
+## Step 5 — Archive Processed Note
 - Write the mapped items to the target governance documents.
-- Move the original note file from `/notes/inbox/<file>` to `/notes/processed/<file>`.
+- Create a copy of the processed note in `notes/processed/<filename>`.
+- Prepend `[PROCESSED: YYYY-MM-DD]` to the original file in `notes/inbox/<filename>` to mark it as done.
+  *(There is no delete_file tool in Antigravity — the original is marked, not removed.)*

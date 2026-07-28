@@ -17,13 +17,25 @@ Follow this step-by-step workflow whenever initiating a new task or user request
   - **Pending**: List the planned action items.
   - **Notes**: Any critical constraints or decisions.
   - **Adversarial QA**: Set to `Pending`.
+  - **Closing**: Set to `Idle`.
 - Do NOT write or edit source code files during this planning phase.
 
 ## Step 3 — Plan QA Review
-- Trigger Adversarial QA review of the plan recorded in `CURRENT_TASK.md`.
-- Verify that the plan is minimal, precise, addresses root causes, and avoids out-of-scope changes.
+- Update **Current Step** in `CURRENT_TASK.md` to `Step 3: Plan QA Review`.
+- Update **Adversarial QA** in `CURRENT_TASK.md` to `In Progress`.
+  *(This silences the PostInvocation hook reminder to prevent duplicate invocations.)*
+- Use `invoke_subagent` to spawn the `adversarial-qa` subagent (`.agents/agents/adversarial-qa.md`).
+- The subagent will inspect the plan and set **Adversarial QA** to `Approved` or `Rejected`.
+- If `Rejected`: address the blocking issues, reset **Adversarial QA** to `Pending`, and repeat step 3.
 
 ## Step 4 — User Confirmation & Approval
-- Present the plan to the user.
+- Update **Current Step** in `CURRENT_TASK.md` to `Step 4: User Confirmation`.
+- Present the approved plan to the user.
 - Wait for explicit user confirmation before executing any code changes.
-- Once approved, update **Current Step** in `CURRENT_TASK.md` to `Step 5: Execution` and proceed with implementation.
+- Once approved, update **Current Step** to `Step 5: Execution` and proceed.
+
+## Step 5 — Execution
+- Implement the plan exactly as approved.
+- Update **Completed So Far** and **Pending** as items are finished.
+- Do not deviate from the approved plan scope. Propose any out-of-scope improvements in text only.
+- When all **Pending** items are resolved, run `/close-task`.

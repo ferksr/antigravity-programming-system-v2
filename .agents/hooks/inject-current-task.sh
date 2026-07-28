@@ -1,15 +1,40 @@
-#!/usr/bin/env bash
-# Re-injects current active task and step context into prompt state before invocation.
-set -euo pipefail
+#!/usr/bin/env python3
+"""
+PreInvocation hook: re-injects the current active task context into the conversation
+before each model call to prevent instruction decay during long sessions.
 
-TASK_FILE="CURRENT_TASK.md"
+Input (stdin):  JSON with invocationNum, initialNumSteps, conversationId, etc.
+Output (stdout): JSON { "injectSteps": [{ "ephemeralMessage": "..." }] }
+"""
+import json
+import sys
 
-if [ -f "$TASK_FILE" ]; then
-  echo "--- CURRENT ACTIVE TASK CONTEXT ---"
-  cat "$TASK_FILE"
-  echo "------------------------------------"
-else
-  echo "No active CURRENT_TASK.md found."
-fi
+TASK_FILE = "CURRENT_TASK.md"
 
-exit 0
+
+def main():
+    # Consume stdin (required by hook contract even if unused)
+    sys.stdin.read()
+
+    try:
+        with open(TASK_FILE) as f:
+            content = f.read()
+
+        # Skip injection when file is still a blank template
+        if "[COMPLETE:" in content or not content.strip():
+            print(json.dumps({"injectSteps": []}))
+            return
+
+        message = (
+            "--- CURRENT ACTIVE TASK CONTEXT ---\n"
+            + content
+            + "\n-----------------------------------"
+        )
+        print(json.dumps({"injectSteps": [{"ephemeralMessage": message}]}))
+
+    except FileNotFoundError:
+        print(json.dumps({"injectSteps": []}))
+
+
+if __name__ == "__main__":
+    main()

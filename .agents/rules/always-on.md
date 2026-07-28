@@ -33,7 +33,7 @@ description: "Core task lifecycle rules, step declarations, next step suggestion
 ## Adversarial QA
 - **Independent Validation Role**: Act with an adversarial mindset during QA execution—assume the changes contain errors and actively seek edge-case failures rather than seeking validation.
 - **Justified Approval**: Approval must be accompanied by explicit justification detailing why the change satisfies all criteria.
-- **Hook Trigger**: Adversarial QA is triggered mechanically via hook upon reaching the "Execution QA" step.
+- **Hook Trigger**: Adversarial QA is triggered during Step 3 (Plan QA Review) of `/new-task` and Step 1 of `/close-task`. The `trigger-adversarial-qa` PostInvocation hook injects a reminder when the active step is "Step 3: Plan QA Review" and QA status is Pending.
 
 ## Persistence
 - All work products, scratchpads, plans, and state files MUST be saved directly in the repository filesystem, never kept solely in ephemeral chat memory or IDE artifacts.

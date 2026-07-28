@@ -18,7 +18,7 @@ This document defines the architecture, operational rules, workflows, and govern
 - `.agents/rules/` — Core operational rules enforced on AI agents (`always-on.md`, `ai-pitfalls.md`, `conventions.md`).
 - `.agents/workflows/` — Step-by-step callable workflows (`new-task.md`, `close-task.md`, `new-adr.md`, `process-inbox.md`).
 - `.agents/hooks/` — Automated execution gates and validation hooks (`hooks.json`, shell scripts).
-- `.agents/subagents/` — Subagent definition prompts (`adversarial-qa.md`).
+- `.agents/agents/` — Auto-discovered custom subagent definitions (`adversarial-qa.md`).
 - `notes/inbox/`, `notes/processed/` — Unstructured idea inbox and archive for project planning.
 
 ---
@@ -31,7 +31,7 @@ This document defines the architecture, operational rules, workflows, and govern
 - **Strict Step Gating**: Never advance to implementation without completing step declarations.
 - **Workflow Triggers**: Follow `/new-task` when starting a task, and `/close-task` when closing a task.
 - **Documentation Maintenance**: Automatically update `README.md` structure, `CHANGELOG.md`, `ROADMAP.md`, and `ARCHITECTURE.md` as work completes.
-- **Adversarial QA**: Mechanical verification step via independent QA subagent context (`.agents/subagents/adversarial-qa.md`).
+- **Adversarial QA**: Mechanical verification step via independent QA subagent (`.agents/agents/adversarial-qa.md`). Invoked explicitly during Step 3 of /new-task and Step 1 of /close-task.
 - **Scope Discipline**: Implement only explicitly requested changes. Propose out-of-scope improvements in text only.
 - **Protected Boundaries**: Never modify `.agents/rules/`, `ARCHITECTURE.md`, or CI configurations without explicit authorization.
 
@@ -51,7 +51,7 @@ This document defines the architecture, operational rules, workflows, and govern
 ## 3. Workflows (`.agents/workflows/`)
 
 - `/new-task` (`.agents/workflows/new-task.md`): Requirements clarification -> Task planning in `CURRENT_TASK.md` -> Plan QA review -> User approval.
-- `/close-task` (`.agents/workflows/close-task.md`): Adversarial QA verification -> Append to `CHANGELOG.md` -> Reset `CURRENT_TASK.md` -> Update `ROADMAP.md`.
+- `/close-task` (`.agents/workflows/close-task.md`): Invoke adversarial-qa subagent -> Verify QA Approved -> Append to `CHANGELOG.md` -> Reset `CURRENT_TASK.md` -> Update `ROADMAP.md`.
 - `/new-adr` (`.agents/workflows/new-adr.md`): Copy ADR template -> Complete alternatives & context -> Add to decision index in `ARCHITECTURE.md`.
 - `/process-inbox` (`.agents/workflows/process-inbox.md`): Read inbox note -> Propose destination mapping -> User confirmation -> Move to `/notes/processed/`.
 
@@ -62,12 +62,12 @@ This document defines the architecture, operational rules, workflows, and govern
 The system enforces quality gates via `.agents/hooks/hooks.json`:
 - `gate-execution-by-step`: Blocks file writes outside of `Step 5: Execution` via `./.agents/hooks/check-step-allows-write.sh`.
 - `protect-rigid-files`: Prevents accidental edits to `.agents/rules/` or `ARCHITECTURE.md` via `./.agents/hooks/protect-files.sh`.
-- `trigger-adversarial-qa`: Signals QA subagent evaluation via `./.agents/hooks/trigger-qa-subagent.sh`.
+- `trigger-adversarial-qa`: When active task is in Step 3 (Plan QA Review) with QA Pending, injects an ephemeral reminder to invoke the adversarial-qa subagent via `./.agents/hooks/trigger-qa-subagent.sh`.
 - `closing-checklist-gate`: Blocks task closure unless `Adversarial QA` is Approved via `./.agents/hooks/check-closing-checklist.sh`.
 - `reinject-current-step`: Re-injects active task context into prompt state via `./.agents/hooks/inject-current-task.sh`.
 
 ---
 
-## 5. Subagents (`.agents/subagents/`)
+## 5. Subagents (`.agents/agents/`)
 
-- `adversarial-qa` (`.agents/subagents/adversarial-qa.md`): Clean-context evaluation subagent for inspecting diffs, running tests, and granting or denying task completion approval.
+- `adversarial-qa` (`.agents/agents/adversarial-qa.md`): Clean-context evaluation subagent for inspecting diffs, running tests, and granting or denying task completion approval.

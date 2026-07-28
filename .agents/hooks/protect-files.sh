@@ -1,18 +1,39 @@
-#!/usr/bin/env bash
-# Guards core system files and rules from accidental unapproved modification.
-set -euo pipefail
+#!/usr/bin/env python3
+"""
+PreToolUse hook: guards .agents/rules/ and ARCHITECTURE.md from accidental modification.
+Set env var ALLOW_PROTECTED_EDIT=1 to bypass for authorized changes.
 
-TARGET_FILE="${1:-}"
+Input (stdin):  JSON with toolCall.args.TargetFile
+Output (stdout): JSON { "decision": "allow"|"deny", "reason": "..." }
+"""
+import json
+import re
+import sys
+import os
 
-# Allow edit if override environment variable is set
-if [ "${ALLOW_PROTECTED_EDIT:-0}" = "1" ]; then
-  exit 0
-fi
+PROTECTED = re.compile(r"(^|[/\\])(\.agents[/\\]rules[/\\]|ARCHITECTURE\.md$)")
 
-# Protect rule definition files and architectural records unless explicitly authorized
-if echo "$TARGET_FILE" | grep -qE "^\.agents/rules/|^ARCHITECTURE\.md"; then
-  echo "Hook Blocked: Modification to protected file '$TARGET_FILE' requires explicit user authorization or ALLOW_PROTECTED_EDIT=1." >&2
-  exit 1
-fi
 
-exit 0
+def main():
+    if os.environ.get("ALLOW_PROTECTED_EDIT", "0") == "1":
+        print(json.dumps({"decision": "allow"}))
+        return
+
+    data = json.load(sys.stdin)
+    target_file = data.get("toolCall", {}).get("args", {}).get("TargetFile", "")
+
+    if PROTECTED.search(target_file):
+        print(json.dumps({
+            "decision": "deny",
+            "reason": (
+                f"'{target_file}' is a protected governance file. "
+                f"Explicit user authorization required. "
+                f"Set ALLOW_PROTECTED_EDIT=1 to override."
+            ),
+        }))
+    else:
+        print(json.dumps({"decision": "allow"}))
+
+
+if __name__ == "__main__":
+    main()

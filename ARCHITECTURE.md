@@ -10,19 +10,14 @@ This document tracks system architecture principles and maintains the chronologi
 
 | ID | Title | Status | Date |
 |---|---|---|---|
-| ADR-001 | Initial Project Architecture | Accepted | [YYYY-MM-DD] |
+
+*No decisions recorded yet.*
 
 ---
 
 ## ADR Records [APPEND]
 
-### ADR-001: Initial Project Architecture
-- **Status**: Accepted
-- **Date**: [YYYY-MM-DD]
-- **Context**: Setting up initial application architecture and technology stack.
-- **Decision**: [COMPLETE: Document core architectural choice and stack selection]
-- **Alternatives Considered**: [COMPLETE: Document alternative architecture or frameworks evaluated]
-- **Consequences**: [COMPLETE: Document positive and negative trade-offs]
+*No ADR records yet. Use `/new-adr` to record the first architectural decision.*
 
 ---
 

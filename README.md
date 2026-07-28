@@ -28,6 +28,9 @@ This repository is pre-configured with the **Antigravity AI Agent System** for s
 ```text
 .
 ├── .agents/
+│   ├── agents/           # Auto-discovered custom subagent definitions
+│   │   └── adversarial-qa.md # Adversarial QA subagent (invoke via invoke_subagent)
+│   ├── subagents/        # (Legacy redirect — canonical definitions are in agents/)
 │   ├── rules/            # Always-on agent rules & code conventions
 │   │   ├── always-on.md  # Core task lifecycle & step gating rules
 │   │   ├── ai-pitfalls.md # Hallucination & context decay guardrails
@@ -37,15 +40,13 @@ This repository is pre-configured with the **Antigravity AI Agent System** for s
 │   │   ├── close-task.md # Wrap up and archive completed tasks
 │   │   ├── new-adr.md    # Record architectural decision records
 │   │   └── process-inbox.md # Ingest raw notes from inbox
-│   ├── hooks/            # IDE hook definitions & enforcement scripts
-│   │   ├── hooks.json    # Pre/Post tool use and lifecycle triggers
-│   │   ├── check-step-allows-write.sh
-│   │   ├── inject-current-task.sh
-│   │   ├── trigger-qa-subagent.sh
-│   │   ├── check-closing-checklist.sh
-│   │   └── protect-files.sh
-│   └── subagents/        # Subagent prompts and isolated evaluation roles
-│       └── adversarial-qa.md # Independent QA subagent context
+│   └── hooks/            # IDE hook definitions & enforcement scripts
+│       ├── hooks.json    # Pre/Post tool use and lifecycle triggers
+│       ├── check-step-allows-write.sh
+│       ├── inject-current-task.sh
+│       ├── trigger-qa-subagent.sh
+│       ├── check-closing-checklist.sh
+│       └── protect-files.sh
 ├── src/                  # Application source code [COMPLETE]
 ├── tests/                # Automated unit, integration, and E2E test suites [COMPLETE]
 ├── notes/
@@ -58,12 +59,13 @@ This repository is pre-configured with the **Antigravity AI Agent System** for s
 ├── KNOWN_ISSUES.md       # Root-cause bug registry and resolution log
 ├── ROADMAP.md            # Project goals, wishlist, and active milestones
 ├── CURRENT_TASK.md       # Active operational task state & QA status
-└── LEARNINGS.md          # Feedback log & user preference learnings
+├── LEARNINGS.md          # Feedback log & user preference learnings
+└── antigravity-programming-system.md # System architecture & agent spec
 ```
 
 ## Governance & Architecture Reference
 - **Agent Rules**: [.agents/rules/always-on.md](file:///.agents/rules/always-on.md)
 - **Workflows**: [.agents/workflows/](file:///.agents/workflows/)
 - **Hooks & Safety**: [.agents/hooks/hooks.json](file:///.agents/hooks/hooks.json)
-- **Adversarial QA Subagent**: [.agents/subagents/adversarial-qa.md](file:///.agents/subagents/adversarial-qa.md)
+- **Adversarial QA Subagent**: [.agents/agents/adversarial-qa.md](file:///.agents/agents/adversarial-qa.md)
 - **System Architecture**: [ARCHITECTURE.md](file:///ARCHITECTURE.md)
