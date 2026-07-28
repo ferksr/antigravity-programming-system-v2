@@ -1,0 +1,55 @@
+{
+  "gate-execution-by-step": {
+    "PreToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "command": "./.agents/hooks/check-step-allows-write.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "reinject-current-step": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "./.agents/hooks/inject-current-task.sh",
+        "timeout": 10
+      }
+    ]
+  },
+  "trigger-adversarial-qa": {
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "./.agents/hooks/trigger-qa-subagent.sh",
+        "timeout": 10
+      }
+    ]
+  },
+  "closing-checklist-gate": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "./.agents/hooks/check-closing-checklist.sh",
+        "timeout": 15
+      }
+    ]
+  },
+  "protect-rigid-files": {
+    "PreToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "command": "./.agents/hooks/protect-files.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
