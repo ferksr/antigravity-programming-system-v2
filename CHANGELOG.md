@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 ## Entry Template [TEMPLATE]
 
 ```markdown
-### [[YYYY-MM-DD]] [Task Title]
+### [YYYY-MM-DD] [Task Title]
 - **Completed**: [Summary of completed features or fixes]
 - **Pending**: [Items left for future tasks]
 - **Notes**: [Execution context or relevant findings]

@@ -63,8 +63,8 @@ This repository is pre-configured with the **Antigravity AI Agent System** for s
 ```
 
 ## Governance & Architecture Reference
-- **Agent Rules**: [.agents/rules/always-on.md](file:///.agents/rules/always-on.md)
-- **Workflows**: [.agents/workflows/](file:///.agents/workflows/)
-- **Hooks & Safety**: [.agents/hooks/hooks.json](file:///.agents/hooks/hooks.json)
-- **Adversarial QA Subagent**: [.agents/agents/adversarial-qa.md](file:///.agents/agents/adversarial-qa.md)
-- **System Architecture**: [ARCHITECTURE.md](file:///ARCHITECTURE.md)
+- **Agent Rules**: [.agents/rules/always-on.md](.agents/rules/always-on.md)
+- **Workflows**: [.agents/workflows/](.agents/workflows/)
+- **Hooks & Safety**: [.agents/hooks/hooks.json](.agents/hooks/hooks.json)
+- **Adversarial QA Subagent**: [.agents/agents/adversarial-qa.md](.agents/agents/adversarial-qa.md)
+- **System Architecture**: [ARCHITECTURE.md](ARCHITECTURE.md)
