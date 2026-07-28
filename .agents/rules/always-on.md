@@ -33,7 +33,7 @@ description: "Core task lifecycle rules, step declarations, next step suggestion
 ## Adversarial QA
 - **Independent Validation Role**: Act with an adversarial mindset during QA execution—assume the changes contain errors and actively seek edge-case failures rather than seeking validation.
 - **Justified Approval**: Approval must be accompanied by explicit justification detailing why the change satisfies all criteria.
-- **Hook Trigger**: Adversarial QA is triggered during Step 3 (Plan QA Review) of `/new-task` and Step 1 of `/close-task`. The `trigger-adversarial-qa` PostInvocation hook injects a reminder when the active step is "Step 3: Plan QA Review" and QA status is Pending.
+- **Hook Trigger**: Adversarial QA is triggered during Step 3 (Plan QA Review) of `/new-task` and Step 6 (Closing) of `/close-task`. The `trigger-adversarial-qa` PostInvocation hook injects a reminder when the active step is "Step 3: Plan QA Review" or "Step 6: Closing" and QA status is Pending.
 
 ## Persistence
 - All work products, scratchpads, plans, and state files MUST be saved directly in the repository filesystem, never kept solely in ephemeral chat memory or IDE artifacts.
@@ -47,7 +47,7 @@ description: "Core task lifecycle rules, step declarations, next step suggestion
 - Do not edit `.agents/rules/`, `ARCHITECTURE.md`, or CI configuration files unless explicitly requested.
   - *To update rules files: set env var `ALLOW_PROTECTED_EDIT=1` or request explicit user authorization before editing.*
 - Do not perform `git push` or merge branches without human confirmation.
-- **Exception**: Files covered under "Documentation Synchronization" (`README.md`, `CHANGELOG.md`, `ROADMAP.md`, `CURRENT_TASK.md`, `KNOWN_ISSUES.md`, `LEARNINGS.md`) are automatically updated as required by workflow steps.
+- **Exception**: Files covered under "Documentation Synchronization" (`README.md`, `CHANGELOG.md`, `ROADMAP.md`, `CURRENT_TASK.md`, `KNOWN_ISSUES.md`, `LEARNINGS.md`, `TESTING.md`, `CONTRIBUTING.md`) are automatically updated as required by workflow steps.
 
 ## Content Marking Conventions
 - `[COMPLETE: instruction]` — Specific missing item to be filled in; replaced entirely when completed.

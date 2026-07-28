@@ -24,8 +24,9 @@ def main():
 
     data = json.loads(raw) if raw.strip() else {}
     target_file = data.get("toolCall", {}).get("args", {}).get("TargetFile", "")
+    normalized_path = os.path.normpath(target_file) if target_file else ""
 
-    if PROTECTED.search(target_file):
+    if PROTECTED.search(normalized_path) or PROTECTED.search(target_file):
         print(json.dumps({
             "decision": "deny",
             "reason": (

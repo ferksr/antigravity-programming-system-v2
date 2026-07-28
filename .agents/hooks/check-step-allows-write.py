@@ -20,7 +20,9 @@ ALWAYS_ALLOWED = re.compile(
     r"|\.agents[/\\]|\.github[/\\]|(^|[/\\])notes[/\\]|\.gitkeep)"
 )
 
-TASK_FILE = "CURRENT_TASK.md"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WORKSPACE_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
+TASK_FILE = os.path.join(WORKSPACE_ROOT, "CURRENT_TASK.md")
 
 
 def main():

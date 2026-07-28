@@ -30,6 +30,10 @@ Follow this step-by-step workflow when completing and closing an active task.
 ## Step 4 — Reset Task State
 - Reset `CURRENT_TASK.md` to the following exact default state:
   ```
+  # Current Active Task State [EDITABLE]
+
+  This file maintains operational state for the active task. It is updated during workflow execution and reset upon task closure.
+
   - **Task**: [COMPLETE: Title of active task]
   - **Origin**: [COMPLETE: User prompt, feature issue, or roadmap item]
   - **Current Step**: Step 1: Requirements & Clarification
