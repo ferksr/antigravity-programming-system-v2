@@ -45,6 +45,7 @@ description: "Core task lifecycle rules, step declarations, next step suggestion
 ## Protected Boundaries (Do Not Touch Without Explicit Authorization)
 - Do not modify files outside those specified in the task request without explicit user approval.
 - Do not edit `.agents/rules/`, `ARCHITECTURE.md`, or CI configuration files unless explicitly requested.
+  - *To update rules files: set env var `ALLOW_PROTECTED_EDIT=1` or request explicit user authorization before editing.*
 - Do not perform `git push` or merge branches without human confirmation.
 - **Exception**: Files covered under "Documentation Synchronization" (`README.md`, `CHANGELOG.md`, `ROADMAP.md`, `CURRENT_TASK.md`, `KNOWN_ISSUES.md`, `LEARNINGS.md`) are automatically updated as required by workflow steps.
 

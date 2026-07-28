@@ -36,6 +36,8 @@ Follow this step-by-step workflow whenever initiating a new task or user request
 
 ## Step 5 — Execution
 - Implement the plan exactly as approved.
-- Update **Completed So Far** and **Pending** as items are finished.
+- Update **Completed So Far** and **Pending** in `CURRENT_TASK.md` as items are finished.
 - Do not deviate from the approved plan scope. Propose any out-of-scope improvements in text only.
-- When all **Pending** items are resolved, run `/close-task`.
+- When all **Pending** items are resolved:
+  - Update **Current Step** to `Step 5: Execution — Complete`.
+  - Run `/close-task` to proceed with QA verification and task closure.
