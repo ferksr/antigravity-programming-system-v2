@@ -18,13 +18,29 @@ Follow this step-by-step workflow when completing and closing an active task.
 - Ensure all tests pass clean with zero failing or skipped assertions.
 
 ## Step 3 — Archive to Changelog
-- Copy the completion summary from `CURRENT_TASK.md`.
-- Append a new log entry to `CHANGELOG.md` using the `[TEMPLATE]` structure:
-  - Date & Timestamp
-  - Completed items & features
-  - Pending follow-ups (if any)
-  - Execution notes
+- Append a new entry to `CHANGELOG.md` under `## Log [APPEND]` using this exact structure:
+  ```
+  ### [YYYY-MM-DD] [Task Title]
+  - **Completed**: [Summary of completed features or fixes]
+  - **Pending**: [Items left for future tasks, or "None"]
+  - **Notes**: [Execution context or relevant findings]
+  ```
+- Do not remove or modify any existing entries.
 
 ## Step 4 — Reset Task State
-- Reset `CURRENT_TASK.md` to its default empty state (all fields cleared, Closing back to `Idle`).
+- Reset `CURRENT_TASK.md` to the following exact default state:
+  ```
+  - **Task**: [COMPLETE: Title of active task]
+  - **Origin**: [COMPLETE: User prompt, feature issue, or roadmap item]
+  - **Current Step**: Step 1: Requirements & Clarification
+  - **Plan**:
+    1. [COMPLETE: Step-by-step technical execution plan]
+  - **Completed So Far**:
+    - [COMPLETE: Items completed in active task]
+  - **Pending**:
+    - [COMPLETE: Action items remaining for completion]
+  - **Notes**: [COMPLETE: Relevant technical constraints or decisions]
+  - **Adversarial QA**: Pending
+  - **Closing**: Idle
+  ```
 - Update `ROADMAP.md` to move the completed item from `In Progress` to `Completed`.

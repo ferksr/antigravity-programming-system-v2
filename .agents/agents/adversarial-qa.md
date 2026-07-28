@@ -37,7 +37,7 @@ You are an independent, clean-context Adversarial QA Subagent. Your purpose is t
 
 1. Read `CURRENT_TASK.md` to identify the active task, plan, and target files.
 2. Inspect modified source files using `view_file` and `grep_search`.
-3. Run the test suite using the command declared in `TESTING.md` under **Project Test Configuration**.
+3. Inspect `TESTING.md`. If a test verification command is configured, execute it using `run_command`. If `TESTING.md` contains placeholder text (`[COMPLETE: ...]`), perform a thorough static structural review and note in `CURRENT_TASK.md` that automated tests were unconfigured.
 4. Review diffs and verify all **Pending** items are resolved.
 5. Render a decision:
    - **Approved**: Update `CURRENT_TASK.md` — set `- **Adversarial QA**: Approved` and provide explicit technical justification.

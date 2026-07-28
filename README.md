@@ -42,11 +42,11 @@ This repository is pre-configured with the **Antigravity AI Agent System** for s
 │   │   └── process-inbox.md # Ingest raw notes from inbox
 │   └── hooks/            # IDE hook definitions & enforcement scripts
 │       ├── hooks.json    # Pre/Post tool use and lifecycle triggers
-│       ├── check-step-allows-write.sh
-│       ├── inject-current-task.sh
-│       ├── trigger-qa-subagent.sh
-│       ├── check-closing-checklist.sh
-│       └── protect-files.sh
+│       ├── check-step-allows-write.py
+│       ├── inject-current-task.py
+│       ├── trigger-qa-subagent.py
+│       ├── check-closing-checklist.py
+│       └── protect-files.py
 ├── src/                  # Application source code [COMPLETE]
 ├── tests/                # Automated unit, integration, and E2E test suites [COMPLETE]
 ├── notes/

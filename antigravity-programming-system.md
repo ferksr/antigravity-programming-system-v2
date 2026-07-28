@@ -60,11 +60,11 @@ This document defines the architecture, operational rules, workflows, and govern
 ## 4. Automated Hooks (`.agents/hooks/`)
 
 The system enforces quality gates via `.agents/hooks/hooks.json`:
-- `gate-execution-by-step`: Blocks file writes outside of `Step 5: Execution` via `./.agents/hooks/check-step-allows-write.sh`.
-- `protect-rigid-files`: Prevents accidental edits to `.agents/rules/` or `ARCHITECTURE.md` via `./.agents/hooks/protect-files.sh`.
-- `trigger-adversarial-qa`: When active task is in Step 3 (Plan QA Review) with QA Pending, injects an ephemeral reminder to invoke the adversarial-qa subagent via `./.agents/hooks/trigger-qa-subagent.sh`.
-- `closing-checklist-gate`: Blocks task closure unless `Adversarial QA` is Approved via `./.agents/hooks/check-closing-checklist.sh`.
-- `reinject-current-step`: Re-injects active task context into prompt state via `./.agents/hooks/inject-current-task.sh`.
+- `gate-execution-by-step`: Blocks file writes outside of `Step 5: Execution` via `python ./.agents/hooks/check-step-allows-write.py`.
+- `protect-rigid-files`: Prevents accidental edits to `.agents/rules/` or `ARCHITECTURE.md` via `python ./.agents/hooks/protect-files.py`.
+- `trigger-adversarial-qa`: When active task is in Step 3 (Plan QA Review) or Step 6 (Closing) with QA Pending, injects an ephemeral reminder to invoke the adversarial-qa subagent via `python ./.agents/hooks/trigger-qa-subagent.py`.
+- `closing-checklist-gate`: Blocks task closure unless `Adversarial QA` is Approved via `python ./.agents/hooks/check-closing-checklist.py`.
+- `reinject-current-step`: Re-injects active task context into prompt state via `python ./.agents/hooks/inject-current-task.py`.
 
 ---
 
