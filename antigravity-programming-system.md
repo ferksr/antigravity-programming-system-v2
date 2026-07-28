@@ -17,7 +17,7 @@ This document defines the architecture, operational rules, workflows, and govern
 - `LEARNINGS.md` — Log of process feedback, user preferences, and operational guidelines learned over time.
 - `.agents/rules/` — Core operational rules enforced on AI agents (`always-on.md`, `ai-pitfalls.md`, `conventions.md`).
 - `.agents/workflows/` — Step-by-step callable workflows (`new-task.md`, `close-task.md`, `new-adr.md`, `process-inbox.md`).
-- `.agents/hooks/` — Automated execution gates and validation hooks (`hooks.json`, shell scripts).
+- `.agents/hooks/` — Automated execution gates and validation hooks (`hooks.json`, Python scripts).
 - `.agents/agents/` — Auto-discovered custom subagent definitions (`adversarial-qa.md`).
 - `notes/inbox/`, `notes/processed/` — Unstructured idea inbox and archive for project planning.
 
@@ -53,7 +53,7 @@ This document defines the architecture, operational rules, workflows, and govern
 - `/new-task` (`.agents/workflows/new-task.md`): Requirements clarification -> Task planning in `CURRENT_TASK.md` -> Plan QA review -> User approval.
 - `/close-task` (`.agents/workflows/close-task.md`): Invoke adversarial-qa subagent -> Verify QA Approved -> Append to `CHANGELOG.md` -> Reset `CURRENT_TASK.md` -> Update `ROADMAP.md`.
 - `/new-adr` (`.agents/workflows/new-adr.md`): Copy ADR template -> Complete alternatives & context -> Add to decision index in `ARCHITECTURE.md`.
-- `/process-inbox` (`.agents/workflows/process-inbox.md`): Read inbox note -> Propose destination mapping -> User confirmation -> Move to `/notes/processed/`.
+- `/process-inbox` (`.agents/workflows/process-inbox.md`): Read inbox note -> Propose destination mapping -> User confirmation -> Copy to `notes/processed/`, mark original with `[PROCESSED]`.
 
 ---
 

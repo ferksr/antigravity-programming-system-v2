@@ -30,7 +30,7 @@ This repository is pre-configured with the **Antigravity AI Agent System** for s
 ├── .agents/
 │   ├── agents/           # Auto-discovered custom subagent definitions
 │   │   └── adversarial-qa.md # Adversarial QA subagent (invoke via invoke_subagent)
-│   ├── subagents/        # (Legacy redirect — canonical definitions are in agents/)
+│   ├── subagents/        # DEPRECATED — delete when using this template
 │   ├── rules/            # Always-on agent rules & code conventions
 │   │   ├── always-on.md  # Core task lifecycle & step gating rules
 │   │   ├── ai-pitfalls.md # Hallucination & context decay guardrails
