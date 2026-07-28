@@ -10,10 +10,13 @@ Input (stdin):  JSON with executionNum, terminationReason, fullyIdle, etc.
 Output (stdout): JSON { "decision": "continue"|"", "reason": "..." }
 """
 import json
+import os
 import re
 import sys
 
-TASK_FILE = "CURRENT_TASK.md"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
+TASK_FILE = os.path.join(PROJECT_ROOT, "CURRENT_TASK.md")
 
 
 def main():
