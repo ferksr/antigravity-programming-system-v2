@@ -43,12 +43,13 @@ description: "Core task lifecycle rules, step declarations, next step suggestion
 - If an out-of-scope improvement is identified, propose it in conversational text only; do not implement it autonomously.
 
 ## Protected Boundaries (Do Not Touch Without Explicit Authorization)
-- **Antigravity System Protection**: NEVER delete, overwrite, or purge the `.agents/` directory, `antigravity-programming-system.md`, `ARCHITECTURE.md`, `CURRENT_TASK.md`, `ROADMAP.md`, `LEARNINGS.md`, `KNOWN_ISSUES.md`, or any agent rules/workflows/hooks under ANY circumstances — including during project initialization or scaffolding CLI commands (e.g. `npm create`, `npx create-vite --overwrite`, etc.).
+- **Antigravity System Protection**: NEVER delete, overwrite, or purge the `.agents/` directory, `antigravity-programming-system.md`, `ARCHITECTURE.md`, `CURRENT_TASK.md`, `ROADMAP.md`, `LEARNINGS.md`, `KNOWN_ISSUES.md`, or any agent rules/workflows/hooks under ANY circumstances — including during project initialization or scaffolding CLI commands (e.g., `npm create`, `npx create-vite --overwrite`, etc.).
+- Always preserve governance files and restore them immediately if any external script touches them.
 - Do not modify files outside those specified in the task request without explicit user approval.
 - Do not edit `.agents/rules/`, `ARCHITECTURE.md`, or CI configuration files unless explicitly requested.
   - *To update rules files: set env var `ALLOW_PROTECTED_EDIT=1` or request explicit user authorization before editing.*
 - Do not perform `git push` or merge branches without human confirmation.
-- **Exception**: Files covered under "Documentation Synchronization" (`README.md`, `CHANGELOG.md`, `ROADMAP.md`, `CURRENT_TASK.md`, `KNOWN_ISSUES.md`, `LEARNINGS.md`, `TESTING.md`, `CONTRIBUTING.md`) are automatically updated as required by workflow steps.
+- **Exception (Operational Files)**: Files covered under "Documentation Synchronization" (`README.md`, `CHANGELOG.md`, `ROADMAP.md`, `CURRENT_TASK.md`, `KNOWN_ISSUES.md`, `LEARNINGS.md`, `TESTING.md`, `CONTRIBUTING.md`) are active working state files that MUST be updated and synchronized continuously as required by workflow steps (`/new-task`, `/close-task`, `/new-adr`).
 
 ## Content Marking Conventions
 - `[COMPLETE: instruction]` — Specific missing item to be filled in; replaced entirely when completed.
