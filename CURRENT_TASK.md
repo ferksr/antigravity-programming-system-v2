@@ -2,24 +2,16 @@
 
 This file maintains operational state for the active task. It is updated during workflow execution and reset upon task closure.
 
-- **Task**: Fase 3 — Persistencia Local con IndexedDB y Dexie
-- **Origin**: Usuario: "/new-task Vamos con la Fase 3: Persistencia Local con IndexedDB y Dexie"
-- **Current Step**: Step 5: Execution
+- **Task**: Idle
+- **Origin**: None
+- **Current Step**: Idle
 - **Plan**:
-  1. Instalar `dexie` y `fake-indexeddb`.
-  2. Crear el esquema de IndexedDB en `src/infrastructure/persistence/db.ts`.
-  3. Crear `ProjectRepository.ts`, `EvaluationRepository.ts` y `ResultRepository.ts`.
-  4. Crear suite de tests en `src/infrastructure/persistence/db.test.ts`.
+  - No active plan.
 - **Completed So Far**:
-  - Ninguno.
+  - None.
 - **Pending**:
-  - [ ] Instalar `dexie` y `fake-indexeddb`
-  - [ ] Crear `src/infrastructure/persistence/db.ts`
-  - [ ] Crear `src/infrastructure/persistence/repositories/ProjectRepository.ts`
-  - [ ] Crear `src/infrastructure/persistence/repositories/EvaluationRepository.ts`
-  - [ ] Crear `src/infrastructure/persistence/repositories/ResultRepository.ts`
-  - [ ] Crear `src/infrastructure/persistence/db.test.ts`
+  - None.
 - **Notes**:
-  - Persistencia local-first según la Sección 22 de `ideas.md`.
-- **Adversarial QA**: Approved
+  - Run `/new-task` to initiate a new feature or task workflow.
+- **Adversarial QA**: N/A
 - **Closing**: Idle

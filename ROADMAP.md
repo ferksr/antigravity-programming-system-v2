@@ -24,8 +24,10 @@ Tracks long-term vision, backlog ideas, planned sprints, active milestones, and 
 
 ## In Progress [EDITABLE]
 *(Maximum 1 item in progress at any given time without explicit justification)*
-- [ ] **Fase 3 — Persistencia**: IndexedDB con Dexie. Proyectos, evaluaciones, resultados, índice espacial.
+
+*No item currently in progress.*
 
 ## Completed [APPEND]
 - [x] **Fase 1 — Fundaciones**: Mapa (Leaflet), cuadrilátero, grilla H3, máscara, candidatos, preview en tiempo real. Sin Google. (Completado: 2026-08-01)
 - [x] **Fase 2 — Dominio**: Tipos de evaluación, motor de scoring, penalización exponencial, ranking. 21 tests Vitest. (Completado: 2026-08-01)
+- [x] **Fase 3 — Persistencia**: IndexedDB con Dexie. Tablas: projects, evaluations, candidates, results, auditEvents. ProjectRepository, EvaluationRepository, ResultRepository. 5 tests de integración. (Completado: 2026-08-01)
