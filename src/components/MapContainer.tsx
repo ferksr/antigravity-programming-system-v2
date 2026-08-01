@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { GeneratedGrid, QuadrilateralZone } from '../domain/spatial/types'
+import type { CandidateEvaluationResult, Destination } from '../domain/evaluation/types'
+import { getScoreColor } from './RankingPanel'
 
 interface MapContainerProps {
   initialCenter?: [number, number] // [lat, lng] — Leaflet convention
@@ -9,6 +11,10 @@ interface MapContainerProps {
   zone: QuadrilateralZone
   onZoneChange: (newZone: QuadrilateralZone) => void
   grid: GeneratedGrid
+  destinations?: Destination[]
+  evaluationResults?: CandidateEvaluationResult[]
+  selectedCandidateId?: string | null
+  onSelectCandidate?: (candidateId: string) => void
 }
 
 export const MapContainer = ({
@@ -17,11 +23,16 @@ export const MapContainer = ({
   zone,
   onZoneChange,
   grid,
+  destinations = [],
+  evaluationResults = [],
+  selectedCandidateId = null,
+  onSelectCandidate,
 }: MapContainerProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
   const hexLayerRef = useRef<L.LayerGroup | null>(null)
   const zoneLayerRef = useRef<L.Polygon | null>(null)
+  const destLayerRef = useRef<L.LayerGroup | null>(null)
   const markersRef = useRef<L.Marker[]>([])
 
   const zoneRef = useRef(zone)
@@ -43,9 +54,11 @@ export const MapContainer = ({
       maxZoom: 19,
     }).addTo(map)
 
-    // LayerGroup para hexágonos (fácil de limpiar)
     const hexLayer = L.layerGroup().addTo(map)
     hexLayerRef.current = hexLayer
+
+    const destLayer = L.layerGroup().addTo(map)
+    destLayerRef.current = destLayer
 
     mapRef.current = map
 
@@ -53,20 +66,50 @@ export const MapContainer = ({
       map.remove()
       mapRef.current = null
       hexLayerRef.current = null
+      destLayerRef.current = null
       markersRef.current = []
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Actualizar hexágonos y zona cuando cambia grid/zone
+  // Actualizar destinos en el mapa
+  useEffect(() => {
+    const destLayer = destLayerRef.current
+    if (!destLayer) return
+
+    destLayer.clearLayers()
+
+    destinations.forEach((d) => {
+      const icon = L.divIcon({
+        html: `<div style="
+          background:#9333ea;color:#fff;
+          padding:3px 6px;border-radius:4px;
+          border:1.5px solid #fff;font-size:10px;
+          font-weight:bold;white-space:nowrap;
+          box-shadow:0 2px 6px rgba(0,0,0,0.3);
+        ">📍 ${d.name}</div>`,
+        className: '',
+        iconSize: [80, 20],
+        iconAnchor: [40, 10],
+      })
+      L.marker([d.lat, d.lng], { icon }).addTo(destLayer)
+    })
+  }, [destinations])
+
+  // Actualizar hexágonos y zona cuando cambia grid/zone/results
   useEffect(() => {
     const map = mapRef.current
     const hexLayer = hexLayerRef.current
     if (!map || !hexLayer) return
 
-    // --- Limpiar capa anterior de hexágonos ---
     hexLayer.clearLayers()
 
-    // --- Dibujar polígono de la zona ---
+    // Map candidate scores by candidateId / h3Index
+    const scoreMap: Record<string, number> = {}
+    evaluationResults.forEach((r) => {
+      scoreMap[r.candidateId] = r.totalScore
+    })
+
+    // Dibujar polígono de la zona
     if (zoneLayerRef.current) {
       zoneLayerRef.current.remove()
     }
@@ -76,33 +119,45 @@ export const MapContainer = ({
       weight: 3,
       dashArray: '6 4',
       fillColor: '#ef4444',
-      fillOpacity: 0.08,
+      fillOpacity: 0.05,
     }).addTo(map)
 
-    // --- Dibujar hexágonos H3 desde el GeoJSON ---
+    // Dibujar hexágonos H3
     L.geoJSON(grid.hexagonsGeoJSON, {
-      style: {
+      style: () => ({
         color: '#1d4ed8',
-        weight: 2,
+        weight: 1.5,
         fillColor: '#3b82f6',
-        fillOpacity: 0.3,
-      },
+        fillOpacity: 0.2,
+      }),
     }).addTo(hexLayer)
 
-    // --- Dibujar puntos candidatos ---
+    // Dibujar puntos candidatos coloreados según score
     grid.candidates.forEach((c) => {
-      L.circleMarker([c.lat, c.lng], {
-        radius: 6,
-        color: '#ffffff',
-        weight: 2,
-        fillColor: '#1e40af',
+      const score = scoreMap[c.id]
+      const isScored = score !== undefined
+      const isSelected = c.id === selectedCandidateId
+      const fillColor = isScored ? getScoreColor(score) : '#1e40af'
+
+      const circle = L.circleMarker([c.lat, c.lng], {
+        radius: isSelected ? 9 : isScored ? 7 : 5,
+        color: isSelected ? '#ffcc00' : '#ffffff',
+        weight: isSelected ? 3 : 1.5,
+        fillColor,
         fillOpacity: 1,
       }).addTo(hexLayer)
+
+      if (isScored) {
+        circle.bindTooltip(`Score: ${score.toFixed(1)} pts`, { direction: 'top' })
+      }
+
+      if (onSelectCandidate) {
+        circle.on('click', () => onSelectCandidate(c.id))
+      }
     })
 
-    // --- Actualizar marcadores de vértices ---
+    // Actualizar marcadores de vértices
     if (markersRef.current.length === 0) {
-      // Primera vez: crear los 4 marcadores de vértice
       const labels = ['NW', 'NE', 'SE', 'SW']
       zone.forEach((point, index) => {
         const icon = L.divIcon({
@@ -132,13 +187,12 @@ export const MapContainer = ({
         markersRef.current.push(marker)
       })
     } else {
-      // Actualizar posición de marcadores existentes
       markersRef.current.forEach((marker, i) => {
         const p = zone[i]
         if (p) marker.setLatLng([p.lat, p.lng])
       })
     }
-  }, [zone, grid])
+  }, [zone, grid, evaluationResults, selectedCandidateId, onSelectCandidate])
 
   return (
     <div
