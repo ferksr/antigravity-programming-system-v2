@@ -13,7 +13,6 @@ Tracks long-term vision, backlog ideas, planned sprints, active milestones, and 
 - [ ] Detección automática de barreras geográficas (ríos, autopistas)
 
 ## Planned [APPEND]
-- [ ] **Fase 2 — Dominio**: Criterios, firmas de cálculo, resultados, scoring (1–100), normalización, pesos, penalización. Sin Google.
 - [ ] **Fase 3 — Persistencia**: IndexedDB con Dexie. Proyectos, evaluaciones, resultados, índice espacial.
 - [ ] **Fase 4 — Audit Log**: Logger estructurado, eventos, correlation IDs, visualización en tiempo real, filtros, copia, exportación.
 - [ ] **Fase 5 — Reuse Engine**: Búsqueda espacial, threshold geodésico, firmas, freshness, reutilización cruzada entre evaluaciones.
@@ -29,4 +28,5 @@ Tracks long-term vision, backlog ideas, planned sprints, active milestones, and 
 *No item currently in progress.*
 
 ## Completed [APPEND]
-- [x] **Fase 1 — Fundaciones**: Mapa (MapLibre), cuadrilátero, grilla H3, máscara, candidatos, preview en tiempo real. Sin Google. (Completado: 2026-08-01)
+- [x] **Fase 1 — Fundaciones**: Mapa (Leaflet), cuadrilátero, grilla H3, máscara, candidatos, preview en tiempo real. Sin Google. (Completado: 2026-08-01)
+- [x] **Fase 2 — Dominio**: Tipos de evaluación, motor de scoring, penalización exponencial, ranking. 21 tests Vitest. (Completado: 2026-08-01)

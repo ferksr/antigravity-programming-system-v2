@@ -2,16 +2,15 @@
 
 This file maintains operational state for the active task. It is updated during workflow execution and reset upon task closure.
 
-- **Task**: Idle
-- **Origin**: None
-- **Current Step**: Idle
+- **Task**: [COMPLETE: Title of active task]
+- **Origin**: [COMPLETE: User prompt, feature issue, or roadmap item]
+- **Current Step**: Step 1: Requirements & Clarification
 - **Plan**:
-  - No active plan.
+  1. [COMPLETE: Step-by-step technical execution plan]
 - **Completed So Far**:
-  - None.
+  - [COMPLETE: Items completed in active task]
 - **Pending**:
-  - None.
-- **Notes**:
-  - Run `/new-task` to initiate a new feature or task workflow.
-- **Adversarial QA**: N/A
+  - [COMPLETE: Action items remaining for completion]
+- **Notes**: [COMPLETE: Relevant technical constraints or decisions]
+- **Adversarial QA**: Pending
 - **Closing**: Idle
