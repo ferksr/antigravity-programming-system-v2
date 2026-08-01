@@ -1,12 +1,11 @@
 /**
- * Domain types for the evaluation engine.
- * All types are pure data structures — no UI, API, or infrastructure dependencies.
+ * Domain types for the evaluation engine strictly following notes/inbox/ideas.md.
  */
 
-/** Supported travel modes for route calculation. */
 export type TravelMode = 'DRIVING' | 'TRANSIT' | 'BICYCLING' | 'WALKING'
 
-/** A geographic destination the user needs to reach. */
+export type CriterionDirection = 'LOWER_IS_BETTER' | 'HIGHER_IS_BETTER'
+
 export interface Destination {
   readonly id: string
   readonly name: string
@@ -14,57 +13,44 @@ export interface Destination {
   readonly lng: number
 }
 
-/**
- * A single evaluation criterion: one destination + travel mode + constraints.
- * The importance weight (1=low, 5=critical) controls how much this criterion
- * contributes to the final weighted score.
- */
 export interface Criterion {
   readonly id: string
   readonly destinationId: string
   readonly travelMode: TravelMode
-  /** Maximum acceptable travel time in minutes. Beyond this triggers penalty scoring. */
-  readonly maxTimeMinutes: number
-  /** Relative importance: 1 (nice to have) … 5 (non-negotiable). */
-  readonly importance: 1 | 2 | 3 | 4 | 5
+  readonly direction: CriterionDirection
+  /** Relative weight (non-negative). Weights do not need to sum to 100. */
+  readonly weight: number
 }
 
-/** Configuration for a full evaluation run. */
+/** Config for scoring aggregation (Section 26, 28, 29 of ideas.md) */
 export interface EvaluationConfig {
   readonly criteria: Criterion[]
   /**
-   * Controls how steeply the score decays when actualTime > maxTime.
-   * Higher values = harsher penalty. Default: 2.
-   * Formula: score = e^(-penaltyFactor * (actualTime/maxTime - 1))
+   * Inequality penalty slider from 0 to 100 (Section 29).
+   * 0 = no inequality penalty (weighted arithmetic mean)
+   * 100 = maximum inequality penalty
    */
-  readonly penaltyFactor: number
+  readonly penaltySlider: number
 }
 
-/** Score result for a single criterion applied to a single candidate. */
-export interface CriterionScore {
+export interface CriterionResult {
   readonly criterionId: string
-  /** Actual travel time in minutes, or null if not yet fetched. */
-  readonly actualTimeMinutes: number | null
+  /** Original raw value (e.g. travel time in minutes, rating, etc.) */
+  readonly rawValue: number | null
   /**
-   * Normalized score in [0, 1]:
-   * - t ≤ tMax → max(0, 1 - t/tMax)
-   * - t > tMax → e^(-k*(t/tMax - 1)) decaying toward 0
+   * Normalized score strictly in [1, 100] (Section 26.1).
+   * Null if rawValue is null.
    */
-  readonly rawScore: number
-  /** rawScore × criterion.importance */
-  readonly weightedContribution: number
+  readonly score: number | null
 }
 
-/** Full evaluation result for one candidate H3 cell. */
 export interface CandidateEvaluationResult {
   readonly candidateId: string
   readonly h3Index: string
   /**
-   * Final aggregated score in [0, 100].
-   * Computed as: (sum of weightedContributions / sum of importances) × 100
+   * Final score in [1, 100] computed via Generalized Mean (Section 29).
    */
   readonly totalScore: number
-  readonly breakdown: CriterionScore[]
-  /** False if any criterion has actualTimeMinutes = null. */
+  readonly criterionResults: CriterionResult[]
   readonly isComplete: boolean
 }

@@ -38,7 +38,8 @@ description: "Core task lifecycle rules, step declarations, next step suggestion
 ## Persistence
 - All work products, scratchpads, plans, and state files MUST be saved directly in the repository filesystem, never kept solely in ephemeral chat memory or IDE artifacts.
 
-## Scope Discipline
+## Scope Discipline & Spec Adherence
+- **Strict Spec Adherence**: ALWAYS consult `notes/inbox/ideas.md` before designing domain models, scoring formulas, or system features. Implement business logic strictly as specified in the master document without inventing custom alternatives.
 - Do not add features, libraries, refactors, or optimizations that were not explicitly requested.
 - If an out-of-scope improvement is identified, propose it in conversational text only; do not implement it autonomously.
 
