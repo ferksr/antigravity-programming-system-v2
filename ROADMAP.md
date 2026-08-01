@@ -32,3 +32,4 @@ Tracks long-term vision, backlog ideas, planned sprints, active milestones, and 
 - [x] **Fase 2 — Dominio**: Tipos de evaluación, motor de scoring, penalización exponencial, ranking. 21 tests Vitest. (Completado: 2026-08-01)
 - [x] **Fase 3 — Persistencia**: IndexedDB con Dexie. Tablas: projects, evaluations, candidates, results, auditEvents. ProjectRepository, EvaluationRepository, ResultRepository. 5 tests de integración. (Completado: 2026-08-01)
 - [x] **Fase 4 — Audit Log**: AuditEvent con correlation IDs, logger con formato §19.4, AuditLogStore reactivo append-only, AuditRepository, useAuditLog hook. 10 tests Vitest. (Completado: 2026-08-01)
+- [x] **Fase 5 — Reuse Engine**: Distancia geodésica (Haversine), firmas de cálculo canónicas, motor de reutilización (threshold, freshness, compatibilidad), ReuseService con Audit Log. 8 tests Vitest. (Completado: 2026-08-01)
