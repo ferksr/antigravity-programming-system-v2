@@ -24,8 +24,7 @@ Tracks long-term vision, backlog ideas, planned sprints, active milestones, and 
 
 ## In Progress [EDITABLE]
 *(Maximum 1 item in progress at any given time without explicit justification)*
-
-*No item currently in progress.*
+- [ ] **Fase 4 — Audit Log**: Logger estructurado, eventos, correlation IDs, visualización en tiempo real, filtros, copia, exportación.
 
 ## Completed [APPEND]
 - [x] **Fase 1 — Fundaciones**: Mapa (Leaflet), cuadrilátero, grilla H3, máscara, candidatos, preview en tiempo real. Sin Google. (Completado: 2026-08-01)
